@@ -1,48 +1,64 @@
 using UnityEngine;
 
-public class humanoidesObserve : MonoBehaviour {
+public class HumanoidsObserve : MonoBehaviour {
     public int type;
     public Transform shieldType1Objective;
-    public Transform orientationTarget;
-    public float rotationSpeed = 180f;
+    public float speed = 2f;
+    
     private Rigidbody rb;
+    private Transform objective;
+    private bool move = false;
+
+    private AudioSource audioSource;
 
     void Start() {
-        rb = GetComponent<Rigidbody>();  
+        rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();  
     }
 
     // It runs every time the GameObject becomes active or the script is enabled.
     void OnEnable() {
-        ReferenceObjectNotifies.onType1 += ReactToType1;
-        ReferenceObjectNotifies.onType2 += ReactToType2;
+        CubeNotifies.onType1 += ReactToType1;
+        CubeNotifies.onType2 += ReactToType2;
     }
 
     // It runs when a script is disabled or the GameObject it's attached to is deactivated.
     void OnDisable() {
-        ReferenceObjectNotifies.onType1 -= ReactToType1;
-        ReferenceObjectNotifies.onType2 -= ReactToType2;
+        CubeNotifies.onType1 -= ReactToType1;
+        CubeNotifies.onType2 -= ReactToType2;
     }
 
-
-    // Type 1 -> Teleport to the assigned shield.
     void ReactToType1() {
-        if (type == 1) {
-            if (shieldType1Objective != null) {
-                rb.position = shieldType1Objective.position;
+        if (type == 2) {
+            GameObject[] shields = GameObject.FindGameObjectsWithTag("EscudoT2");
+            if (shields.Length > 0) {
+                objective = shields[Random.Range(0, shields.Length)].transform;
+                move = true;
             }
         }
     }
 
-    // Group 2: Look towards the orientation object.
     void ReactToType2() {
-        if (type == 2) {
-            if (orientationTarget != null) {
-                Vector3 direction = orientationTarget.position - rb.position;
-                direction.y = 0f;
-                if (direction.sqrMagnitude > 0.001f) {
-                    rb.rotation = Quaternion.LookRotation(direction);
-                }
+        if (type == 1) {
+            objective = shieldType1Objective;
+            move = (objective != null);
+        }
+    }
+
+    // It runs before each physics update.
+    void FixedUpdate() {
+        if (move && objective != null && rb != null) {
+            Vector3 direction = (objective.position - rb.position).normalized;
+            rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
+        }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("EscudoT1") || other.CompareTag("EscudoT2")) {
+            if (audioSource != null && !audioSource.isPlaying) {
+                audioSource.Play();
             }
+            move = false;
         }
     }
 }
