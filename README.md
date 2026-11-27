@@ -18,16 +18,16 @@ https://github.com/user-attachments/assets/05305b98-54a5-417d-89ba-0b6df7ad9cc1
 
 Para la cámara web, el script `TV.cs` (asociado al televisor central) detecta las cámaras conectadas (`WebCamTexture.devices`) e imprime por consola el nombre del dispositivo seleccionado (`Debug.Log`). Durante la ejecución, al pulsar la tecla `S` se asigna la señal de la cámara a la propiedad `mainTexture` del material de la pantalla y se inicia la transmisión en directo (`Play()`), pudiendo detenerse en cualquier momento con la tecla `P` (`Stop()`). Finalmente, mientras la cámara está activa, el usuario puede capturar fotogramas aislados pulsando la tecla `X`, momento en el que se extrae el bloque de píxeles del *frame* actual hacia una textura `Texture2D` y se almacena de forma secuencial en disco en formato `.png` dentro de la carpeta `Assets/Capturas/`. Se puede ver su ejecución a continuación:
 
-https://github.com/user-attachments/assets/8a77315a-cf32-4821-9116-ff3f9139c717
+https://github.com/user-attachments/assets/67e1a3d3-491a-47a6-8c9b-00eca0ff03d6
 
 ## Controles durante la ejecución
 
-| Tecla | Acción | Escena / Script |
+| Tecla | Acción | Script |
 | :---: | :--- | :--- |
-| **`R`** | Reproduce por los altavoces el sonido captado por el micrófono | `Altavoces` (`Recorder.cs`) |
-| **`T`** | Detiene la reproducción y finaliza la captura del micrófono | `Altavoces` (`Recorder.cs`) |
-| **`S`** | Enciende la cámara web y proyecta la imagen en el televisor central | `Altavoces` (`TV.cs`) |
-| **`P`** | Detiene la captura de vídeo de la cámara | `Altavoces` (`TV.cs`) |
-| **`X`** | Toma una captura de pantalla y la guarda como `.png` en `Assets/Capturas/` | `Altavoces` (`TV.cs`) |
+| **`R`** | Reproduce por los altavoces el sonido captado por el micrófono | `Recorder.cs` |
+| **`T`** | Detiene la reproducción y finaliza la captura del micrófono | `Recorder.cs` |
+| **`S`** | Enciende la cámara web y proyecta la imagen en el televisor central | `TV.cs` |
+| **`P`** | Detiene la captura de vídeo de la cámara | `TV.cs` |
+| **`X`** | Toma una captura de pantalla y la guarda como `.png` en `Assets/Capturas/` | `TV.cs` |
 
 *Candela García Cruz*
